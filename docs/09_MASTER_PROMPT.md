@@ -10,8 +10,8 @@
 ### CURRENT STATUS BLOCK
 - **Project:** INCORRUPTA (Mumbai Police Digital Evidence & Muddemal Management)
 - **Current Phase:** Phase 1 (Sevarth ID WebAuthn Auth & Database Schema)
-- **Last Completed Ticket:** T-004 (Mumbai Police PostgreSQL Schema Migration)
-- **Next Ticket to Execute:** T-005 (WebAuthn Relying Party Edge Functions)
+- **Last Completed Ticket:** T-005 (WebAuthn Relying Party Edge Functions)
+- **Next Ticket to Execute:** T-006 (Sevarth ID WebAuthn Client Login UI)
 - **Blockers:** None
 
 ---

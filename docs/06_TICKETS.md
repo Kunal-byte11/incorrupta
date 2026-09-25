@@ -19,8 +19,8 @@
 │ T-002  │ Mumbai Police Theme & Design Tokens Setup │ Phase 0  │ S      │ DONE   │
 │ T-003  │ CI Workflow & Test Pipeline               │ Phase 0  │ S      │ DONE   │
 │ T-004  │ Mumbai Police PostgreSQL Schema Migration │ Phase 1  │ M      │ DONE   │
-│ T-005  │ WebAuthn Relying Party Edge Functions     │ Phase 1  │ M      │ TODO   │
-│ T-006  │ Sevarth ID WebAuthn Client Login UI       │ Phase 1  │ M      │
+│ T-005  │ WebAuthn Relying Party Edge Functions     │ Phase 1  │ M      │ DONE   │
+│ T-006  │ Sevarth ID WebAuthn Client Login UI       │ Phase 1  │ M      │ TODO   │
 │ T-007  │ FIR / CR Case Management CRUD UI          │ Phase 2  │ M      │
 │ T-008  │ Police Station & Zone RLS Security        │ Phase 2  │ M      │
 │ T-009  │ Web Crypto Streaming Dual-Hashing Engine  │ Phase 3  │ M      │
@@ -89,13 +89,14 @@
 ---
 
 ### T-005: WebAuthn Relying Party Edge Functions
-- **Type:** `feature` | **Phase:** Phase 1 | **Size:** M | **Status:** TODO
+- **Type:** `feature` | **Phase:** Phase 1 | **Size:** M | **Status:** DONE
 - **Linked Requirements:** TR-001, FR-001, 04_ARCHITECTURE Section 2, 05_SECURITY Section 3
 - **Description:** Implement server-side WebAuthn relying party Edge Functions (`auth-register-challenge`, `auth-register-verify`, `auth-login-challenge`, `auth-login-verify`) using `@simplewebauthn/server` bound to Mumbai Police Sevarth IDs.
 - **Acceptance Criteria:**
   - *Given* an officer's Sevarth ID (e.g. `MH-POL-40211`),
   - *When* requesting an authentication challenge,
   - *Then* a cryptographic challenge is generated and cached, and upon biometric verification, the sign counter is validated and an authenticated session is established.
+- **Changelog:** Implemented WebAuthn relying party engine in `src/lib/auth/webauthnRp.ts`, created 4 Supabase Edge Functions with CORS and deployed them to `ap-south-1` sovereign cloud, verified live challenge invocation, and added 6 unit tests in `src/lib/auth/webauthnRp.test.ts`.
 
 ---
 

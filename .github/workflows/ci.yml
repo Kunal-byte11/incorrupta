@@ -1,0 +1,44 @@
+name: INCORRUPTA CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Lint, Typecheck, Test, Audit, & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Step 1 - Lint (ESLint 9)
+        run: npm run lint
+
+      - name: Step 2 - Typecheck (TypeScript 5 strict mode)
+        run: npm run typecheck
+
+      - name: Step 3 - Unit Tests (Vitest)
+        run: npm run test
+
+      - name: Step 4 - Security Scan (Production Dependencies Audit)
+        run: npm audit --omit=dev
+
+      - name: Step 5 - Build Artifacts (Vite 5 Production Build)
+        run: npm run build

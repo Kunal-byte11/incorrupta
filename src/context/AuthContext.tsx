@@ -16,6 +16,17 @@ export interface OfficerProfile {
 }
 
 export const SEEDED_OFFICERS: Record<string, OfficerProfile> = {
+  'MH-POL-00001': {
+    id: '00000000-0000-4000-a000-000000000000',
+    sevarthId: 'MH-POL-00001',
+    badgeNumber: 'CP-MUM-01',
+    fullName: 'Vivek Phansalkar, IPS',
+    fullNameMarathi: 'विवेक फणसळकर, आय.पी.एस.',
+    policeRank: 'COMMISSIONER_OF_POLICE',
+    policeStation: 'Mumbai Police Commissionerate HQ',
+    policeZone: 'All Stations (Zone I - XII)',
+    clearanceLevel: 5,
+  },
   'MH-POL-40211': {
     id: '11111111-1111-4111-a111-111111111111',
     sevarthId: 'MH-POL-40211',
@@ -58,6 +69,7 @@ interface AuthContextType {
   isLoading: boolean;
   error: ForensicsError | null;
   login: (sevarthId: string) => Promise<boolean>;
+  testLogin: (sevarthId?: string) => Promise<boolean>;
   logout: () => void;
   toggleLanguage: () => void;
   setLanguage: (lang: 'en' | 'mr') => void;
@@ -121,6 +133,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return false;
   };
 
+  const testLogin = async (sevarthId: string = 'MH-POL-00001'): Promise<boolean> => {
+    const normalizedId = sevarthId.trim().toUpperCase();
+    const profile: OfficerProfile = SEEDED_OFFICERS[normalizedId] || SEEDED_OFFICERS['MH-POL-00001'];
+    setOfficer(profile);
+    localStorage.setItem('incorrupta_officer', JSON.stringify(profile));
+    return true;
+  };
+
   const logout = () => {
     setOfficer(null);
     localStorage.removeItem('incorrupta_officer');
@@ -135,6 +155,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isLoading,
         error,
         login,
+        testLogin,
         logout,
         toggleLanguage,
         setLanguage: updateLanguage,

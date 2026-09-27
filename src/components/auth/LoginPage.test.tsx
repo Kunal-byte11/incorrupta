@@ -83,4 +83,18 @@ describe('Sevarth ID WebAuthn Client Login UI (T-006)', () => {
       expect(screen.getByText(/BKC Cyber Crime Police Station/i)).toBeInTheDocument();
     }, { timeout: 3000 });
   });
+
+  it('provides 1-click test biometric login with access to all data and stations', async () => {
+    render(<App />);
+
+    expect(screen.getByText(/मुंबई पोलीस • MUMBAI POLICE/i)).toBeInTheDocument();
+
+    const testLoginBtn = screen.getByRole('button', { name: /Test Biometric Login/i });
+    expect(testLoginBtn).toBeInTheDocument();
+    fireEvent.click(testLoginBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Full Commissionerate Access|All Mumbai Police Stations/i)).toBeInTheDocument();
+    }, { timeout: 3000 });
+  });
 });

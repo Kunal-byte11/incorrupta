@@ -4,6 +4,32 @@
 
 @layer base {
   body {
-    @apply bg-police-navy text-slate-100 font-sans antialiased min-h-screen selection:bg-accent-cyan selection:text-police-navy;
+    background-color: #F8FAFC;
+    color: #0F172A;
+    font-family: 'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background-color: #FEF3C7;
+    color: #92400E;
+  }
+
+  /* Micro-scrollbars for light high-density law enforcement panes */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #F1F5F9;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
   }
 }

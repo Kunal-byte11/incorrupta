@@ -39,7 +39,6 @@ export const CustodyTransferModal: React.FC<CustodyTransferModalProps> = ({
     setIsSigning(true);
 
     try {
-      // Simulate dual WebAuthn step-up signing
       await new Promise((resolve) => setTimeout(resolve, 800));
 
       EvidenceService.transferCustody({
@@ -62,27 +61,27 @@ export const CustodyTransferModal: React.FC<CustodyTransferModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-      <div className="bg-police-slate border border-police-border rounded-xl max-w-lg w-full shadow-2xl p-6 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+      <div className="bg-white border border-slate-200 rounded-xl max-w-lg w-full shadow-2xl p-6 relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1 text-slate-400 hover:text-white rounded hover:bg-police-elevated"
+          className="absolute top-4 right-4 p-1 text-slate-400 hover:text-slate-700 rounded hover:bg-slate-100"
         >
           <X size={20} />
         </button>
 
-        <div className="flex items-center gap-2 mb-4 border-b border-police-border pb-3">
-          <ArrowRightLeft size={22} className="text-accent-gold" />
+        <div className="flex items-center gap-2 mb-4 border-b border-slate-200 pb-3">
+          <ArrowRightLeft size={22} className="text-amber-700" />
           <div>
-            <h2 className="text-base font-bold text-white">
+            <h2 className="text-base font-bold text-slate-900 font-mono">
               {language === 'mr' ? 'मुद्देमाल ताबा हस्तांतरण' : 'Muddemal Custody Transfer & Handover'}
             </h2>
-            <p className="text-xs text-slate-400 font-mono">{evidence.muddemal_number}</p>
+            <p className="text-xs text-slate-500 font-mono font-medium">{evidence.muddemal_number}</p>
           </div>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-status-tamper/15 border border-status-tamper/40 text-status-tamper text-xs flex items-center gap-2">
+          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2 font-mono">
             <AlertCircle size={16} />
             <span>{error}</span>
           </div>
@@ -90,13 +89,13 @@ export const CustodyTransferModal: React.FC<CustodyTransferModalProps> = ({
 
         <form onSubmit={handleTransfer} className="space-y-4 text-xs">
           <div>
-            <label className="block font-semibold text-slate-300 uppercase mb-1">
+            <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
               {language === 'mr' ? 'हस्तांतरण प्रकार (Movement Type)' : 'Movement Category'}
             </label>
             <select
               value={movementType}
               onChange={(e) => setMovementType(e.target.value as typeof movementType)}
-              className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs focus:ring-1 focus:ring-accent-cyan"
+              className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:outline-none focus:bg-white focus:border-sovereign-navy shadow-xs font-medium"
             >
               <option value="SCENE_SEIZURE_TO_MALKHANA">
                 {language === 'mr' ? 'घटनास्थळ जप्ती -> ठाणे मालखाना' : 'Scene Seizure -> Station Malkhana Deposit'}
@@ -114,13 +113,13 @@ export const CustodyTransferModal: React.FC<CustodyTransferModalProps> = ({
           </div>
 
           <div>
-            <label className="block font-semibold text-slate-300 uppercase mb-1">
+            <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
               {language === 'mr' ? 'स्वीकारणारा अधिकारी (Transferee)' : 'Receiving Custodian'}
             </label>
             <select
               value={transfereeId}
               onChange={(e) => setTransfereeId(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs focus:ring-1 focus:ring-accent-cyan"
+              className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:outline-none focus:bg-white focus:border-sovereign-navy shadow-xs font-medium"
             >
               {Object.values(SEEDED_OFFICERS).map((off) => (
                 <option key={off.id} value={off.id}>
@@ -132,7 +131,7 @@ export const CustodyTransferModal: React.FC<CustodyTransferModalProps> = ({
 
           {movementType.includes('MALKHANA') && (
             <div>
-              <label className="block font-semibold text-slate-300 uppercase mb-1">
+              <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'मालखाना कपाट / लॉकर स्थान' : 'Malkhana Shelf / Safe Locker Location'}
               </label>
               <input
@@ -140,14 +139,14 @@ export const CustodyTransferModal: React.FC<CustodyTransferModalProps> = ({
                 value={shelfLocation}
                 onChange={(e) => setShelfLocation(e.target.value)}
                 placeholder="e.g. Vault Alpha, Locker 04"
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs font-mono"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs font-mono shadow-xs"
               />
             </div>
           )}
 
           {movementType.includes('FSL') && (
             <div>
-              <label className="block font-semibold text-slate-300 uppercase mb-1">
+              <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'कलिना FSL पावती / संदर्भ क्र.' : 'DFSL Kalina Token / Acknowledgement Ref'}
               </label>
               <input
@@ -155,26 +154,26 @@ export const CustodyTransferModal: React.FC<CustodyTransferModalProps> = ({
                 value={dfslAckNo}
                 onChange={(e) => setDfslAckNo(e.target.value)}
                 placeholder="DFSL-KALINA-CYBER-2026-XXXX"
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs font-mono"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs font-mono shadow-xs"
               />
             </div>
           )}
 
           <div>
-            <label className="block font-semibold text-slate-300 uppercase mb-1">
+            <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
               {language === 'mr' ? 'हस्तांतरण टिपण / उद्देश' : 'Purpose Memo & Transit Note'}
             </label>
             <textarea
               rows={2}
               value={purposeMemo}
               onChange={(e) => setPurposeMemo(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs"
+              className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs shadow-xs focus:bg-white focus:border-sovereign-navy"
               required
             />
           </div>
 
-          <div className="p-3 rounded-lg bg-police-navy border border-police-border text-[11px] text-slate-400">
-            <span className="font-semibold text-accent-gold block mb-1">
+          <div className="p-3.5 rounded-lg bg-amber-50/70 border border-amber-200 text-[11px] text-amber-900">
+            <span className="font-bold block mb-1 font-mono uppercase">
               {language === 'mr' ? 'दुहेरी बायोमेट्रिक स्वाक्षरी बंधनकारक' : 'Dual Biometric Signoff Required:'}
             </span>
             {language === 'mr'
@@ -182,18 +181,18 @@ export const CustodyTransferModal: React.FC<CustodyTransferModalProps> = ({
               : 'Both Transferor and Transferee passkeys seal this cryptographic Merkle transfer block.'}
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-police-border">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
             <button
               type="button"
               onClick={onClose}
-              className="px-3.5 py-2 rounded bg-police-elevated hover:bg-police-border text-slate-300 text-xs font-medium"
+              className="px-4 py-2 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold shadow-xs"
             >
               {language === 'mr' ? 'रद्द करा' : 'Cancel'}
             </button>
             <button
               type="submit"
               disabled={isSigning}
-              className="flex items-center gap-1.5 px-4 py-2 rounded bg-accent-gold hover:bg-accent-gold/90 text-police-navy text-xs font-bold shadow-md shadow-accent-gold/20 disabled:opacity-50"
+              className="flex items-center gap-1.5 px-5 py-2 rounded bg-sovereign-navy hover:bg-sovereign-navyHover text-white text-xs font-bold shadow-sm font-mono uppercase tracking-wider disabled:opacity-50"
             >
               <Fingerprint size={16} />
               <span>

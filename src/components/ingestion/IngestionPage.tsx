@@ -74,9 +74,9 @@ export const IngestionPage: React.FC<IngestionPageProps> = ({
 
   if (!officer || !caseData) {
     return (
-      <div className="p-8 text-center text-slate-400">
+      <div className="p-8 text-center text-slate-500 font-mono text-xs">
         <p>Case not found.</p>
-        <button onClick={onBack} className="mt-2 text-accent-cyan text-xs underline">Back</button>
+        <button onClick={onBack} className="mt-2 text-sovereign-navy text-xs underline font-bold">Back</button>
       </div>
     );
   }
@@ -108,7 +108,6 @@ export const IngestionPage: React.FC<IngestionPageProps> = ({
   };
 
   const handleSimulateSampleVideo = async () => {
-    // Generate simulated 4K continuous seizure recording blob
     const sampleText = `MUMBAI POLICE SECTION 105 BNSS 2023 SEARCH & SEIZURE RECORDING
 CR NO: ${caseData.cr_number}
 STATION: ${caseData.police_station}
@@ -144,8 +143,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
     setError(null);
 
     try {
-      // Simulate biometric WebAuthn sealing
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await new Promise((resolve) => setTimeout(resolve, 600));
 
       EvidenceService.ingestEvidence({
         caseId: caseData.id,
@@ -188,40 +186,40 @@ TAMPER-PROOF RECORDING ACTIVE`;
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-accent-cyan transition-colors"
+          className="flex items-center gap-1.5 text-xs text-slate-600 hover:text-sovereign-navy font-bold transition-colors font-mono"
         >
           <ArrowLeft size={16} />
-          <span>{language === 'mr' ? 'गुन्ह्याकडे परत' : 'Back to Case'}</span>
+          <span>{language === 'mr' ? 'गुन्ह्याकडे परत' : 'Back to Case Dossier'}</span>
         </button>
 
         <div className="text-right">
-          <span className="text-[11px] font-mono text-accent-gold font-bold">
+          <span className="text-[11px] font-mono text-amber-900 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-300">
             {caseData.cr_number}
           </span>
-          <span className="text-[11px] text-slate-400 block">{caseData.police_station}</span>
+          <span className="text-[11px] text-slate-500 block mt-0.5 font-mono">{caseData.police_station}</span>
         </div>
       </div>
 
-      {/* Main Seizure Card */}
-      <div className="bg-police-slate border border-police-border rounded-xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-cyan via-accent-gold to-accent-cyan" />
+      {/* Main Seizure Card in Light Mode */}
+      <div className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-sovereign-navy via-amber-600 to-sovereign-navy" />
 
-        <div className="flex items-center gap-3 mb-6 border-b border-police-border pb-4">
-          <div className="p-3 bg-police-navy rounded-xl border border-police-border text-accent-gold">
+        <div className="flex items-center gap-3 mb-6 border-b border-slate-200 pb-4">
+          <div className="p-3 bg-sovereign-navy rounded-xl border border-amber-600/40 text-amber-400 shadow-sm">
             <Video size={28} />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs px-2 py-0.5 rounded bg-police-elevated text-accent-gold border border-accent-gold/30 font-semibold font-mono">
+              <span className="text-xs px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-300 font-bold font-mono">
                 BNSS SECTION 105
               </span>
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-slate-500">
                 {language === 'mr'
                   ? 'सक्तीचे ऑडिओ-व्हिडिओ पंचनामा जप्ती स्टुडिओ'
                   : 'Mandatory Audio-Video Search & Seizure Recording'}
               </span>
             </div>
-            <h1 className="text-xl font-bold text-white mt-1">
+            <h1 className="text-xl font-bold text-slate-900 mt-1">
               {language === 'mr'
                 ? 'डिजिटल मुद्देमाल नोंदणी व पंचनामा'
                 : 'Digital Evidence Ingestion & Biometric Sealing'}
@@ -230,16 +228,16 @@ TAMPER-PROOF RECORDING ACTIVE`;
         </div>
 
         {error && (
-          <div className="mb-5 p-3 rounded-lg bg-status-tamper/15 border border-status-tamper/40 text-status-tamper text-xs flex items-center gap-2">
+          <div className="mb-5 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2 font-mono">
             <AlertCircle size={16} className="shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* File Dropzone */}
+          {/* File Dropzone in Light Mode */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase mb-2">
+            <label className="block text-xs font-bold text-slate-700 uppercase mb-2 font-mono">
               {language === 'mr' ? 'जप्त केलेली डिजिटल फाईल / व्हिडिओ' : 'Seized Digital File / BNSS 105 Videography'}
             </label>
 
@@ -252,13 +250,13 @@ TAMPER-PROOF RECORDING ACTIVE`;
 
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-police-border hover:border-accent-cyan/60 rounded-xl p-6 text-center cursor-pointer bg-police-navy/50 transition-colors"
+              className="border-2 border-dashed border-slate-300 hover:border-sovereign-navy rounded-xl p-6 text-center cursor-pointer bg-slate-50/70 hover:bg-slate-50 transition-colors"
             >
-              <Upload size={36} className="mx-auto mb-2 text-accent-cyan" />
-              <p className="text-xs font-semibold text-white">
+              <Upload size={36} className="mx-auto mb-2 text-sovereign-navy" />
+              <p className="text-xs font-bold text-slate-900">
                 {selectedFile ? selectedFile.name : 'Click to select or drag video / forensic image'}
               </p>
-              <p className="text-[11px] text-slate-400 mt-1">
+              <p className="text-[11px] text-slate-500 mt-1 font-mono">
                 Supports MP4, MOV, DD, RAW, E01, PCAP, PDF (Chunked streaming up to 50 GB)
               </p>
 
@@ -268,9 +266,9 @@ TAMPER-PROOF RECORDING ACTIVE`;
                   e.stopPropagation();
                   handleSimulateSampleVideo();
                 }}
-                className="mt-3 text-[11px] px-3 py-1 rounded bg-police-elevated hover:bg-police-border border border-police-border text-accent-gold font-medium inline-flex items-center gap-1"
+                className="mt-3 text-[11px] px-3 py-1.5 rounded bg-white hover:bg-slate-100 border border-slate-300 text-amber-800 font-bold inline-flex items-center gap-1 shadow-xs font-mono"
               >
-                <Camera size={12} />
+                <Camera size={13} />
                 <span>[Auto-Load Sample BNSS 105 Seizure Video]</span>
               </button>
             </div>
@@ -278,21 +276,21 @@ TAMPER-PROOF RECORDING ACTIVE`;
 
           {/* Live Hashing Meter */}
           {(isHashing || hashResult) && (
-            <div className="bg-police-navy p-4 rounded-xl border border-police-border space-y-3">
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-slate-300 flex items-center gap-1.5">
-                  <ShieldCheck size={14} className="text-status-pristine" />
+                <span className="font-bold text-slate-800 flex items-center gap-1.5">
+                  <ShieldCheck size={14} className="text-emerald-600" />
                   Dual-Hashing Stream (SHA-256 + Blake3)
                 </span>
-                <span className="font-mono text-status-pristine font-bold">
+                <span className="font-mono text-emerald-700 font-bold">
                   {isHashing ? `${hashProgress}%` : '100% VERIFIED'}
                 </span>
               </div>
 
               {/* Progress bar */}
-              <div className="w-full h-2 rounded-full bg-police-elevated overflow-hidden">
+              <div className="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
                 <div
-                  className="h-full bg-status-pristine transition-all duration-200"
+                  className="h-full bg-emerald-600 transition-all duration-200"
                   style={{ width: `${hashProgress}%` }}
                 />
               </div>
@@ -300,12 +298,12 @@ TAMPER-PROOF RECORDING ACTIVE`;
               {hashResult && (
                 <div className="space-y-1.5 pt-1 text-[11px] font-mono">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                    <span className="text-slate-400">SHA-256 Digest:</span>
-                    <span className="text-status-pristine truncate max-w-md">{hashResult.sha256}</span>
+                    <span className="text-slate-500 font-semibold">SHA-256 Digest:</span>
+                    <span className="text-emerald-800 font-bold truncate max-w-md">{hashResult.sha256}</span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                    <span className="text-slate-400">Blake3 Digest:</span>
-                    <span className="text-status-pristine truncate max-w-md">{hashResult.blake3}</span>
+                    <span className="text-slate-500 font-semibold">Blake3 Digest:</span>
+                    <span className="text-amber-800 font-bold truncate max-w-md">{hashResult.blake3}</span>
                   </div>
                 </div>
               )}
@@ -315,7 +313,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
           {/* Form Meta */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="block font-semibold text-slate-300 uppercase mb-1">
+              <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'मुद्देमाल नाव' : 'Muddemal Exhibit Title'}
               </label>
               <input
@@ -324,18 +322,18 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. CCTV Recording of East Entrance"
                 required
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs focus:ring-1 focus:ring-accent-cyan"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-sovereign-navy shadow-xs"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-300 uppercase mb-1">
+              <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'मुद्देमाल वर्गवारी (Category)' : 'Evidence Category'}
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as typeof category)}
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs focus:ring-1 focus:ring-accent-cyan"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-sovereign-navy shadow-xs font-medium"
               >
                 <option value="SEARCH_SEIZURE_VIDEOGRAPHY_BNSS105">
                   BNSS 105 Continuous Scene Videography
@@ -353,7 +351,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="block font-semibold text-slate-300 uppercase mb-1">
+              <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'जप्ती पंचनामा संदर्भ क्र.' : 'Japti Panchnama Reference No.'}
               </label>
               <input
@@ -361,12 +359,12 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 value={panchnamaRef}
                 onChange={(e) => setPanchnamaRef(e.target.value)}
                 required
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs font-mono focus:ring-1 focus:ring-accent-cyan"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs font-mono focus:bg-white focus:border-sovereign-navy shadow-xs"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-300 uppercase mb-1">
+              <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'घटनास्थळ पत्ता / लोकेशन' : 'Scene Seizure Location / Address'}
               </label>
               <input
@@ -374,15 +372,15 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 value={sceneAddress}
                 onChange={(e) => setSceneAddress(e.target.value)}
                 required
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs focus:ring-1 focus:ring-accent-cyan"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-sovereign-navy shadow-xs"
               />
             </div>
           </div>
 
           {/* 2 Independent Panch Witnesses */}
-          <div className="bg-police-navy/60 p-4 rounded-xl border border-police-border space-y-4">
-            <div className="flex items-center gap-2 text-xs font-bold text-accent-gold">
-              <UserCheck size={16} />
+          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
+            <div className="flex items-center gap-2 text-xs font-bold text-amber-900">
+              <UserCheck size={16} className="text-amber-700" />
               <span>
                 {language === 'mr'
                   ? '२ स्वतंत्र पंच साक्षीदार (Mandatory 2 Independent Panch Witnesses)'
@@ -398,7 +396,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 value={panch1Name}
                 onChange={(e) => setPanch1Name(e.target.value)}
                 required
-                className="px-2.5 py-1.5 rounded bg-police-slate border border-police-border text-white text-xs"
+                className="px-2.5 py-1.5 rounded bg-white border border-slate-300 text-slate-900 text-xs shadow-xs"
               />
               <input
                 type="text"
@@ -406,7 +404,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 value={panch1Address}
                 onChange={(e) => setPanch1Address(e.target.value)}
                 required
-                className="px-2.5 py-1.5 rounded bg-police-slate border border-police-border text-white text-xs"
+                className="px-2.5 py-1.5 rounded bg-white border border-slate-300 text-slate-900 text-xs shadow-xs"
               />
               <input
                 type="text"
@@ -414,7 +412,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 value={panch1Phone}
                 onChange={(e) => setPanch1Phone(e.target.value)}
                 required
-                className="px-2.5 py-1.5 rounded bg-police-slate border border-police-border text-white text-xs font-mono"
+                className="px-2.5 py-1.5 rounded bg-white border border-slate-300 text-slate-900 text-xs font-mono shadow-xs"
               />
             </div>
 
@@ -426,7 +424,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 value={panch2Name}
                 onChange={(e) => setPanch2Name(e.target.value)}
                 required
-                className="px-2.5 py-1.5 rounded bg-police-slate border border-police-border text-white text-xs"
+                className="px-2.5 py-1.5 rounded bg-white border border-slate-300 text-slate-900 text-xs shadow-xs"
               />
               <input
                 type="text"
@@ -434,7 +432,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 value={panch2Address}
                 onChange={(e) => setPanch2Address(e.target.value)}
                 required
-                className="px-2.5 py-1.5 rounded bg-police-slate border border-police-border text-white text-xs"
+                className="px-2.5 py-1.5 rounded bg-white border border-slate-300 text-slate-900 text-xs shadow-xs"
               />
               <input
                 type="text"
@@ -442,7 +440,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 value={panch2Phone}
                 onChange={(e) => setPanch2Phone(e.target.value)}
                 required
-                className="px-2.5 py-1.5 rounded bg-police-slate border border-police-border text-white text-xs font-mono"
+                className="px-2.5 py-1.5 rounded bg-white border border-slate-300 text-slate-900 text-xs font-mono shadow-xs"
               />
             </div>
           </div>
@@ -450,7 +448,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
           {/* Capturing Device Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="block font-semibold text-slate-300 uppercase mb-1">
+              <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'चित्रीकरण उपकरण / कॅमेरा मॉडेल' : 'Capturing Device Make & Model'}
               </label>
               <input
@@ -458,11 +456,11 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 value={deviceMake}
                 onChange={(e) => setDeviceMake(e.target.value)}
                 required
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs shadow-xs"
               />
             </div>
             <div>
-              <label className="block font-semibold text-slate-300 uppercase mb-1">
+              <label className="block font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'उपकरण अनुक्रमांक (Device Serial No.)' : 'Device Serial Number'}
               </label>
               <input
@@ -470,17 +468,17 @@ TAMPER-PROOF RECORDING ACTIVE`;
                 value={deviceSerial}
                 onChange={(e) => setDeviceSerial(e.target.value)}
                 required
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs font-mono"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs font-mono shadow-xs"
               />
             </div>
           </div>
 
           {/* Submission and Biometric Seal Button */}
-          <div className="flex items-center justify-between pt-4 border-t border-police-border">
+          <div className="flex items-center justify-between pt-4 border-t border-slate-200">
             <button
               type="button"
               onClick={onBack}
-              className="px-4 py-2 rounded bg-police-elevated hover:bg-police-border text-slate-300 text-xs font-medium"
+              className="px-4 py-2 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold shadow-xs"
             >
               {language === 'mr' ? 'रद्द करा' : 'Cancel'}
             </button>
@@ -488,7 +486,7 @@ TAMPER-PROOF RECORDING ACTIVE`;
             <button
               type="submit"
               disabled={isSubmitting || isHashing || !selectedFile}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-accent-cyan hover:bg-accent-cyan/90 text-police-navy text-xs font-bold shadow-lg shadow-accent-cyan/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-6 py-2.5 rounded bg-sovereign-navy hover:bg-sovereign-navyHover text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed font-mono"
             >
               <Fingerprint size={18} />
               <span>

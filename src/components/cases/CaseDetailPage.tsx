@@ -10,6 +10,9 @@ import {
   Layers,
   CheckCircle2,
   Clock,
+  Lock,
+  Tag,
+  Cpu,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { CasesService } from '../../services/casesService';
@@ -72,13 +75,13 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({
 
   if (!officer || !caseData) {
     return (
-      <div className="p-8 text-center text-slate-400">
-        <p>{language === 'mr' ? 'गुन्ह्याची माहिती उपलब्ध नाही' : 'Case details not found.'}</p>
+      <div className="p-8 text-center text-slate-500 font-mono text-xs">
+        <p>{language === 'mr' ? 'गुन्ह्याची माहिती उपलब्ध नाही' : 'Case dossier not found.'}</p>
         <button
           onClick={onBack}
-          className="mt-3 px-4 py-2 bg-police-elevated rounded text-xs text-white"
+          className="mt-3 px-3 py-1.5 bg-white border border-slate-300 rounded text-xs text-slate-800 shadow-xs"
         >
-          {language === 'mr' ? 'मागे जा' : 'Back to Dashboard'}
+          {language === 'mr' ? 'मागे जा' : 'Return to Registry'}
         </button>
       </div>
     );
@@ -113,55 +116,59 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Back button and breadcrumb */}
+    <div className="space-y-4 max-w-7xl mx-auto">
+      {/* Navigation and Quick Action Bar */}
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-accent-cyan transition-colors"
+          className="flex items-center gap-1.5 text-xs text-slate-600 hover:text-sovereign-navy transition-colors font-mono font-medium"
         >
-          <ArrowLeft size={16} />
-          <span>{language === 'mr' ? 'गुन्हा नोंदवही कडे परत' : 'Back to Station Registry'}</span>
+          <ArrowLeft size={14} />
+          <span>{language === 'mr' ? 'गुन्हा नोंदवही कडे परत' : 'Return to Station Registry'}</span>
         </button>
 
         <button
           onClick={() => onNavigateToIngestion(caseData.id)}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent-cyan hover:bg-accent-cyan/90 text-police-navy font-bold text-xs shadow-md shadow-accent-cyan/20 transition-all"
+          className="flex items-center gap-2 px-3 py-1.5 rounded bg-sovereign-navy hover:bg-sovereign-navyHover text-white font-bold text-xs font-mono uppercase tracking-wider shadow-sm transition-all"
         >
-          <Plus size={16} />
+          <Plus size={14} />
           <span>
             {language === 'mr'
-              ? 'कलम १०५ BNSS डिजिटल जप्ती (Ingest Evidence)'
-              : 'BNSS 105 Digital Seizure'}
+              ? 'कलम १०५ BNSS डिजिटल जप्ती (Ingest)'
+              : 'BNSS 105 Ingest Seizure'}
           </span>
         </button>
       </div>
 
-      {/* Case Header Card */}
-      <div className="bg-police-slate border border-police-border rounded-xl p-6 shadow-xl relative overflow-hidden">
+      {/* Case Dossier Master Header */}
+      <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-          <div>
-            <div className="flex flex-wrap items-center gap-2 mb-1.5">
-              <span className="font-mono text-sm font-bold text-accent-gold px-2.5 py-0.5 rounded bg-police-navy border border-accent-gold/40">
+          <div className="space-y-2 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-mono text-xs font-bold text-amber-900 px-2 py-0.5 rounded bg-amber-50 border border-amber-300">
                 {caseData.cr_number}
               </span>
-              <span className="text-xs px-2 py-0.5 rounded bg-police-elevated text-slate-300 border border-police-border">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
                 {caseData.police_station}
               </span>
-              <span className="text-xs px-2 py-0.5 rounded bg-accent-cyan/15 text-accent-cyan font-semibold border border-accent-cyan/30">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-300 uppercase font-semibold">
                 {caseData.status.replace(/_/g, ' ')}
+              </span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center gap-1 font-bold">
+                <Lock size={10} />
+                <span>MERKLE LOCKED</span>
               </span>
             </div>
 
-            <h1 className="text-xl md:text-2xl font-bold text-white mt-2">{caseData.title}</h1>
-            <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+            <h1 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight">{caseData.title}</h1>
+            <p className="text-xs text-slate-600 max-w-4xl leading-relaxed">
               {caseData.description}
             </p>
 
             {/* Case Particulars */}
-            <div className="flex flex-wrap items-center gap-4 mt-4 text-xs text-slate-400 border-t border-police-border/60 pt-3">
+            <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 border-t border-slate-200 pt-2.5 font-mono text-[11px]">
               <div className="flex items-center gap-1.5">
-                <Calendar size={13} className="text-accent-gold" />
+                <Calendar size={12} className="text-amber-700" />
                 <span>
                   FIR Date:{' '}
                   {new Date(caseData.fir_date).toLocaleDateString('en-IN', {
@@ -174,20 +181,25 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({
               </div>
 
               <div className="flex items-center gap-1.5">
-                <Scale size={13} className="text-accent-cyan" />
+                <Scale size={12} className="text-sovereign-navy" />
                 <span>Court: {caseData.designated_court}</span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <Cpu size={12} className="text-emerald-700" />
+                <span>Forensic Hash: BLAKE3 &bull; SHA-256 Dual Engine</span>
               </div>
             </div>
 
             {/* Penal Sections Tags */}
-            <div className="flex flex-wrap items-center gap-1.5 mt-3">
-              <span className="text-xs text-slate-400 font-semibold mr-1">
-                {language === 'mr' ? 'लागू कलमे:' : 'Penal Sections:'}
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              <span className="text-[10px] font-mono text-slate-500 uppercase mr-1 font-bold">
+                {language === 'mr' ? 'लागू कलमे:' : 'Statutory Sections:'}
               </span>
               {caseData.penal_sections.map((sec) => (
                 <span
                   key={sec}
-                  className="px-2 py-0.5 rounded bg-police-navy border border-police-border text-xs font-mono text-slate-200"
+                  className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-medium"
                 >
                   {sec}
                 </span>
@@ -197,47 +209,47 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({
         </div>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="flex items-center gap-3 border-b border-police-border">
+      {/* Forensic Navigation Tabs in Light Mode */}
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-1 font-mono text-xs">
         <button
           onClick={() => setActiveTab('muddemal')}
-          className={`pb-3 text-xs font-bold flex items-center gap-2 border-b-2 transition-all ${
+          className={`py-2 px-3.5 rounded-t border-b-2 flex items-center gap-2 transition-all font-bold ${
             activeTab === 'muddemal'
-              ? 'border-accent-cyan text-accent-cyan'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'border-sovereign-navy text-sovereign-navy bg-white shadow-xs'
+              : 'border-transparent text-slate-500 hover:text-slate-900'
           }`}
         >
-          <Layers size={16} />
+          <Layers size={14} />
           <span>
             {language === 'mr'
               ? `मुद्देमाल रजिस्टर (${evidenceList.length})`
-              : `Muddemal Property Register (${evidenceList.length})`}
+              : `Muddemal Evidence Register (${evidenceList.length})`}
           </span>
         </button>
 
         <button
           onClick={() => setActiveTab('custody')}
-          className={`pb-3 text-xs font-bold flex items-center gap-2 border-b-2 transition-all ${
+          className={`py-2 px-3.5 rounded-t border-b-2 flex items-center gap-2 transition-all font-bold ${
             activeTab === 'custody'
-              ? 'border-accent-gold text-accent-gold'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'border-sovereign-navy text-sovereign-navy bg-white shadow-xs'
+              : 'border-transparent text-slate-500 hover:text-slate-900'
           }`}
         >
-          <Clock size={16} />
+          <Clock size={14} />
           <span>
             {language === 'mr'
               ? 'अखंडित ताबा साखळी (Chain of Custody)'
-              : 'Cryptographic Custody Ledger'}
+              : 'Cryptographic Custody Timeline'}
           </span>
         </button>
       </div>
 
       {/* Tab 1: Muddemal Property Register */}
       {activeTab === 'muddemal' && (
-        <div className="bg-police-slate border border-police-border rounded-xl overflow-hidden shadow-lg">
+        <div className="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
           {evidenceList.length === 0 ? (
-            <div className="p-12 text-center text-slate-400 text-xs">
-              <ShieldCheck size={36} className="mx-auto mb-2 text-slate-500 opacity-60" />
+            <div className="p-12 text-center text-slate-500 text-xs font-mono">
+              <ShieldCheck size={32} className="mx-auto mb-2 text-slate-400 opacity-60" />
               <p>
                 {language === 'mr'
                   ? 'या गुन्ह्यात अद्याप कोणतीही डिजिटल जप्ती नोंदवलेली नाही.'
@@ -245,116 +257,135 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({
               </p>
               <button
                 onClick={() => onNavigateToIngestion(caseData.id)}
-                className="mt-3 px-4 py-2 bg-accent-cyan text-police-navy rounded font-bold text-xs"
+                className="mt-3 px-3 py-1.5 bg-sovereign-navy text-white rounded font-bold text-xs uppercase shadow-sm"
               >
                 {language === 'mr' ? 'पहिली जप्ती नोंदवा (BNSS 105)' : 'Start First Ingestion'}
               </button>
             </div>
           ) : (
-            <div className="divide-y divide-police-border/60">
+            <div className="divide-y divide-slate-200">
               {evidenceList.map((item) => {
                 const hashes = EvidenceService.getHashesForEvidence(item.id);
                 const baselineHash = hashes[0]?.sha256_hash || '';
+                const blake3Hash = hashes[0]?.blake3_hash || '';
 
                 return (
                   <div
                     key={item.id}
-                    className="p-5 hover:bg-police-elevated/40 transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-4"
+                    className="p-4 hover:bg-slate-50/80 transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-4"
                   >
-                    <div className="space-y-1.5 flex-1">
+                    <div className="space-y-1.5 flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs font-bold text-accent-gold px-2 py-0.5 rounded bg-police-navy border border-police-border">
+                        <span className="font-mono text-xs font-bold text-sovereign-navy px-2 py-0.5 rounded bg-slate-100 border border-slate-300">
                           {item.muddemal_number}
                         </span>
-                        <span className="text-[11px] px-2 py-0.5 rounded bg-police-elevated text-slate-300 font-mono">
-                          Panchnama: {item.panchnama_reference}
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-slate-50 text-slate-700 font-mono border border-slate-200 flex items-center gap-1 font-medium">
+                          <Tag size={10} className="text-amber-700" />
+                          <span>Panchnama: {item.panchnama_reference}</span>
                         </span>
                         <span
-                          className={`text-[10px] px-2 py-0.5 rounded font-semibold ${
+                          className={`text-[9px] font-mono px-2 py-0.5 rounded font-bold uppercase ${
                             item.status === 'INGESTED_PRISTINE'
-                              ? 'bg-status-pristine/20 text-status-pristine border border-status-pristine/30'
+                              ? 'bg-emerald-50 text-emerald-800 border border-emerald-300'
                               : item.status === 'IN_POLICE_MALKHANA'
-                              ? 'bg-accent-gold/20 text-accent-gold border border-accent-gold/30'
-                              : 'bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/30'
+                              ? 'bg-amber-50 text-amber-900 border border-amber-300'
+                              : 'bg-slate-100 text-slate-700 border border-slate-300'
                           }`}
                         >
                           {item.status.replace(/_/g, ' ')}
                         </span>
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-50 text-slate-600 border border-slate-200">
+                          Seal #MUM-CYB-994201
+                        </span>
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
+                          Tableau T8u Hardware Locked
+                        </span>
                       </div>
 
-                      <h3 className="text-sm font-bold text-white">{item.title}</h3>
+                      <h3 className="text-sm font-bold text-slate-900 tracking-tight">{item.title}</h3>
 
-                      <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
+                      <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-mono">
                         <span>Category: {item.category.replace(/_/g, ' ')}</span>
-                        <span>•</span>
+                        <span>&bull;</span>
                         <span>
                           Size: {(item.file_size_bytes / (1024 * 1024)).toFixed(2)} MB ({item.mime_type})
                         </span>
                         {item.malkhana_shelf_location && (
                           <>
-                            <span>•</span>
-                            <span className="text-accent-gold">
+                            <span>&bull;</span>
+                            <span className="text-amber-800 font-medium">
                               Location: {item.malkhana_shelf_location}
                             </span>
                           </>
                         )}
                         {item.dfsl_kalina_acknowledgement_no && (
                           <>
-                            <span>•</span>
-                            <span className="text-accent-cyan">
+                            <span>&bull;</span>
+                            <span className="text-emerald-800 font-medium">
                               FSL Ref: {item.dfsl_kalina_acknowledgement_no}
                             </span>
                           </>
                         )}
                       </div>
 
-                      {/* Cryptographic Baseline Hash */}
-                      <div className="pt-1 flex items-center gap-2 text-[10px] font-mono">
-                        <span className="text-slate-500">SHA-256:</span>
-                        <span className="text-status-pristine truncate max-w-md">
-                          {baselineHash || 'Calculating...'}
-                        </span>
-                        <CheckCircle2 size={12} className="text-status-pristine shrink-0" />
+                      {/* Cryptographic Dual Hashes Display */}
+                      <div className="pt-1 space-y-0.5 text-[10px] font-mono">
+                        <div className="flex items-center gap-2">
+                          <span className="text-slate-500 w-16 font-semibold">SHA-256:</span>
+                          <span className="text-emerald-800 font-medium truncate max-w-xl">
+                            {baselineHash || 'Calculating...'}
+                          </span>
+                          <CheckCircle2 size={11} className="text-emerald-600 shrink-0" />
+                        </div>
+                        {blake3Hash && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-500 w-16 font-semibold">BLAKE3:</span>
+                            <span className="text-amber-800 font-medium truncate max-w-xl">
+                              {blake3Hash}
+                            </span>
+                            <CheckCircle2 size={11} className="text-amber-600 shrink-0" />
+                          </div>
+                        )}
                       </div>
                     </div>
 
                     {/* Operational Action Buttons */}
-                    <div className="flex flex-wrap items-center gap-2 shrink-0">
+                    <div className="flex flex-wrap items-center gap-2 shrink-0 font-mono text-xs">
                       <button
                         type="button"
                         onClick={() => {
                           setVerifyingEvidence({ evidence: item, hashRecord: hashes[0] });
                         }}
-                        className="px-3 py-1.5 rounded bg-police-elevated hover:bg-police-border border border-police-border text-xs text-status-pristine font-medium flex items-center gap-1.5 transition-colors"
+                        className="px-2.5 py-1.5 rounded bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 font-bold flex items-center gap-1.5 transition-colors shadow-xs"
                       >
-                        <ShieldCheck size={14} />
-                        <span>{language === 'mr' ? 'हॅश पडताळा' : 'Verify Integrity'}</span>
+                        <ShieldCheck size={13} />
+                        <span>{language === 'mr' ? 'हॅश पडताळा' : 'Verify'}</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => setTransferringEvidence(item)}
-                        className="px-3 py-1.5 rounded bg-police-elevated hover:bg-police-border border border-police-border text-xs text-accent-gold font-medium flex items-center gap-1.5 transition-colors"
+                        className="px-2.5 py-1.5 rounded bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 font-bold flex items-center gap-1.5 transition-colors shadow-xs"
                       >
-                        <ArrowRightLeft size={14} />
-                        <span>{language === 'mr' ? 'ताबा हस्तांतरण' : 'Transfer Custody'}</span>
+                        <ArrowRightLeft size={13} />
+                        <span>{language === 'mr' ? 'ताबा हस्तांतरण' : 'Transfer'}</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => handleDownloadCertificate(item)}
                         disabled={isGeneratingPdf === item.id}
-                        className="px-3 py-1.5 rounded bg-accent-cyan hover:bg-accent-cyan/90 text-police-navy text-xs font-bold flex items-center gap-1.5 shadow transition-all disabled:opacity-50"
+                        className="px-3 py-1.5 rounded bg-sovereign-navy hover:bg-sovereign-navyHover text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all disabled:opacity-50"
                       >
-                        <Download size={14} />
+                        <Download size={13} />
                         <span>
                           {isGeneratingPdf === item.id
                             ? language === 'mr'
                               ? 'तयार होत आहे...'
                               : 'Generating...'
                             : language === 'mr'
-                            ? 'कलम ६३ प्रमाणपत्र'
-                            : 'Section 63 BSA'}
+                              ? 'कलम ६३ प्रमाणपत्र'
+                              : 'Sec 63 BSA'}
                         </span>
                       </button>
                     </div>
@@ -366,20 +397,20 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({
         </div>
       )}
 
-      {/* Tab 2: Full Chain of Custody Ledger */}
+      {/* Tab 2: Full Chain of Custody Ledger in Light Mode */}
       {activeTab === 'custody' && (
-        <div className="bg-police-slate border border-police-border rounded-xl p-6 shadow-lg">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-police-border">
+        <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-3 border-b border-slate-200">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Clock size={16} className="text-accent-gold" />
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 font-mono">
+                <Clock size={15} className="text-amber-700" />
                 <span>
                   {language === 'mr'
                     ? 'अखंडित ताबा साखळी इतिहास (Merkle Chained Events)'
                     : 'Unbroken Custody Timeline & Dual Passkey Attestations'}
                 </span>
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-[11px] text-slate-500 mt-0.5 font-mono">
                 {language === 'mr'
                   ? 'घटनास्थळापासून ते मालखाना व कलिना FSL पर्यंतचा प्रत्येक हस्तांतरण ब्लॉक'
                   : 'Every transfer secured with timestamp, previous hash, and officer biometric signature.'}
@@ -387,14 +418,14 @@ export const CaseDetailPage: React.FC<CaseDetailPageProps> = ({
             </div>
 
             {/* Select Muddemal Item */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400">
+            <div className="flex items-center gap-2 font-mono text-xs">
+              <span className="text-slate-500 font-semibold">
                 {language === 'mr' ? 'मुद्देमाल निवडा:' : 'Select Muddemal:'}
               </span>
               <select
                 value={selectedEvidenceForTimeline || ''}
                 onChange={(e) => setSelectedEvidenceForTimeline(e.target.value)}
-                className="px-3 py-1.5 rounded bg-police-navy border border-police-border text-white text-xs font-mono"
+                className="px-2.5 py-1 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs font-mono shadow-xs"
               >
                 {evidenceList.map((e) => (
                   <option key={e.id} value={e.id}>

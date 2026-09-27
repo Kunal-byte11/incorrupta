@@ -102,26 +102,26 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-      <div className="bg-police-slate border border-police-border rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+      <div className="bg-white border border-slate-200 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1 text-slate-400 hover:text-white rounded hover:bg-police-elevated"
+          className="absolute top-4 right-4 p-1 text-slate-400 hover:text-slate-700 rounded hover:bg-slate-100"
         >
           <X size={20} />
         </button>
 
-        <div className="flex items-center gap-2 mb-4 border-b border-police-border pb-3">
-          <span className="text-xs px-2 py-0.5 rounded bg-police-elevated text-accent-gold border border-accent-gold/30 font-semibold">
+        <div className="flex items-center gap-2 mb-4 border-b border-slate-200 pb-3">
+          <span className="text-xs px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-300 font-bold font-mono">
             {language === 'mr' ? 'नवीन गुन्हा नोंदणी' : 'FIR REGISTRATION'}
           </span>
-          <h2 className="text-lg font-bold text-white">
+          <h2 className="text-lg font-bold text-slate-900 font-mono">
             {language === 'mr' ? 'गुन्हा रजिस्टर (CR) नवीन नोंदणी' : 'Register New Crime Register (CR) Case'}
           </h2>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-status-tamper/15 border border-status-tamper/40 text-status-tamper text-xs flex items-center gap-2">
+          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2 font-mono">
             <AlertCircle size={16} />
             <span>{error}</span>
           </div>
@@ -130,7 +130,7 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase mb-1">
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'गुन्हा रजिस्टर क्र. (CR No.)' : 'Crime Register (CR) No.'}
               </label>
               <input
@@ -139,25 +139,25 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
                 onChange={(e) => setCrNumber(e.target.value)}
                 placeholder="CR No. 150/2026"
                 required
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-sm font-mono focus:outline-none focus:ring-1 focus:ring-accent-cyan"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-sm font-mono focus:outline-none focus:bg-white focus:border-sovereign-navy shadow-xs"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase mb-1">
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'पोलीस ठाणे (Police Station)' : 'Police Station'}
               </label>
               <input
                 type="text"
                 disabled
                 value={officer.policeStation}
-                className="w-full px-3 py-2 rounded bg-police-navy/50 border border-police-border text-slate-400 text-sm cursor-not-allowed"
+                className="w-full px-3 py-2 rounded bg-slate-100 border border-slate-200 text-slate-500 text-sm cursor-not-allowed font-mono"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase mb-1">
+            <label className="block text-xs font-bold text-slate-700 uppercase mb-1 font-mono">
               {language === 'mr' ? 'गुन्ह्याचे शीर्षक / विषय' : 'Case Title / Primary Allegation'}
             </label>
             <input
@@ -166,13 +166,13 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Unauthorized Financial Data Breach & Extortion"
               required
-              className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-sm focus:outline-none focus:ring-1 focus:ring-accent-cyan"
+              className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:bg-white focus:border-sovereign-navy shadow-xs"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase mb-1">
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'एफआयआर तारीख व वेळ (FIR Date & Time)' : 'FIR Date & Time (IST)'}
               </label>
               <input
@@ -180,18 +180,18 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
                 value={firDate}
                 onChange={(e) => setFirDate(e.target.value)}
                 required
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-sm focus:outline-none focus:ring-1 focus:ring-accent-cyan"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-sm font-mono focus:outline-none focus:bg-white focus:border-sovereign-navy shadow-xs"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase mb-1">
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1 font-mono">
                 {language === 'mr' ? 'नेमलेले न्यायालय (Designated Court)' : 'Designated Court'}
               </label>
               <select
                 value={designatedCourt}
                 onChange={(e) => setDesignatedCourt(e.target.value)}
-                className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-sm focus:outline-none focus:ring-1 focus:ring-accent-cyan"
+                className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:bg-white focus:border-sovereign-navy shadow-xs"
               >
                 <option value="City Civil & Sessions Court, Fort, Mumbai">
                   City Civil &amp; Sessions Court, Fort, Mumbai
@@ -210,7 +210,7 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5 font-mono">
               {language === 'mr' ? 'लागू असणारी कलमे (Penal Sections BNS / IT Act)' : 'Penal Sections (BNS 2023 & IT Act)'}
             </label>
             <div className="flex flex-wrap gap-1.5 mb-2">
@@ -222,10 +222,10 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
                     key={sec}
                     type="button"
                     onClick={() => handleToggleSection(sec)}
-                    className={`text-xs px-2.5 py-1 rounded transition-colors ${
+                    className={`text-xs px-2.5 py-1 rounded transition-colors font-mono font-medium ${
                       isSelected
-                        ? 'bg-accent-cyan text-police-navy font-bold'
-                        : 'bg-police-elevated border border-police-border text-slate-300 hover:border-slate-400'
+                        ? 'bg-sovereign-navy text-white font-bold shadow-xs'
+                        : 'bg-slate-100 border border-slate-300 text-slate-700 hover:bg-slate-200'
                     }`}
                   >
                     {sec}
@@ -240,12 +240,12 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
                 value={customSection}
                 onChange={(e) => setCustomSection(e.target.value)}
                 placeholder="Add other section (e.g. BNS 111)"
-                className="flex-1 px-3 py-1.5 rounded bg-police-navy border border-police-border text-white text-xs font-mono"
+                className="flex-1 px-3 py-1.5 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs font-mono shadow-xs"
               />
               <button
                 type="button"
                 onClick={handleAddCustomSection}
-                className="px-3 py-1.5 rounded bg-police-elevated hover:bg-police-border border border-police-border text-xs text-white flex items-center gap-1"
+                className="px-3 py-1.5 rounded bg-white hover:bg-slate-100 border border-slate-300 text-xs text-slate-700 font-bold flex items-center gap-1 shadow-xs"
               >
                 <Plus size={14} /> Add
               </button>
@@ -253,7 +253,7 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase mb-1">
+            <label className="block text-xs font-bold text-slate-700 uppercase mb-1 font-mono">
               {language === 'mr' ? 'गुन्ह्याचे संक्षिप्त वर्णन (Description)' : 'Investigation Summary / Memo'}
             </label>
             <textarea
@@ -261,21 +261,21 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Brief details of complainant, scene, or suspect IP..."
-              className="w-full px-3 py-2 rounded bg-police-navy border border-police-border text-white text-xs focus:outline-none focus:ring-1 focus:ring-accent-cyan"
+              className="w-full px-3 py-2 rounded bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:outline-none focus:bg-white focus:border-sovereign-navy shadow-xs"
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-police-border">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded bg-police-elevated hover:bg-police-border text-slate-300 text-xs font-medium"
+              className="px-4 py-2 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold shadow-xs"
             >
               {language === 'mr' ? 'रद्द करा' : 'Cancel'}
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded bg-accent-cyan hover:bg-accent-cyan/90 text-police-navy text-xs font-bold shadow-md shadow-accent-cyan/20"
+              className="px-5 py-2 rounded bg-sovereign-navy hover:bg-sovereign-navyHover text-white text-xs font-bold shadow-sm font-mono uppercase tracking-wider"
             >
               {language === 'mr' ? 'गुन्हा नोंदवा (Register CR)' : 'Register CR Case'}
             </button>

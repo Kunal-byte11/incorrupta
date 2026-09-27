@@ -1,138 +1,184 @@
-import React from 'react';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import React, { useState } from 'react';
+import { AuthProvider, useAuth, SEEDED_OFFICERS } from './context/AuthContext';
 import { LoginPage } from './components/auth/LoginPage';
-import { ShieldCheck, Lock, CheckCircle2, LogOut, UserCircle2, Building2, Clock, Globe } from 'lucide-react';
+import { DashboardPage } from './components/dashboard/DashboardPage';
+import { CaseDetailPage } from './components/cases/CaseDetailPage';
+import { IngestionPage } from './components/ingestion/IngestionPage';
+import {
+  ShieldCheck,
+  LogOut,
+  UserCircle2,
+  Building2,
+  Clock,
+  Globe,
+  ChevronDown,
+} from 'lucide-react';
+
+type ActiveView =
+  | { type: 'dashboard' }
+  | { type: 'case-detail'; caseId: string }
+  | { type: 'ingestion'; caseId: string };
 
 const MainPortal: React.FC = () => {
-  const { officer, isAuthenticated, logout, language, toggleLanguage } = useAuth();
+  const { officer, isAuthenticated, logout, language, toggleLanguage, login } = useAuth();
+  const [view, setView] = useState<ActiveView>({ type: 'dashboard' });
+  const [showPersonaMenu, setShowPersonaMenu] = useState(false);
 
   if (!isAuthenticated || !officer) {
     return <LoginPage />;
   }
 
+  const handleSelectOfficerPersona = async (sevarthId: string) => {
+    setShowPersonaMenu(false);
+    await login(sevarthId);
+    setView({ type: 'dashboard' });
+  };
+
   return (
-    <main className="min-h-screen bg-police-navy text-slate-100 p-6 md:p-10 font-sans">
-      <div className="max-w-7xl mx-auto">
-        {/* Mumbai Police Header with Officer Status */}
-        <header className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-police-border gap-4">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-police-slate rounded-lg border border-police-border shadow-md">
-              <ShieldCheck className="text-accent-cyan" size={36} aria-hidden="true" />
+    <div className="min-h-screen bg-police-navy text-slate-100 font-sans selection:bg-accent-cyan selection:text-police-navy flex flex-col justify-between">
+      {/* Top Mumbai Police Bar */}
+      <header className="border-b border-police-border bg-police-navy/95 sticky top-0 z-40 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
+          {/* Insignia & Heading */}
+          <div
+            className="flex items-center gap-3 cursor-pointer group"
+            onClick={() => setView({ type: 'dashboard' })}
+          >
+            <div className="p-2 bg-police-slate rounded-lg border border-police-border shadow group-hover:border-accent-cyan transition-colors">
+              <ShieldCheck className="text-accent-cyan" size={28} aria-hidden="true" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-police-elevated text-accent-gold border border-accent-gold/30">
+                <span className="text-[10px] font-semibold px-2 py-0.2 rounded bg-police-elevated text-accent-gold border border-accent-gold/30">
                   सद्रक्षणाय खलनिग्रहणाय
                 </span>
-                <span className="text-xs text-slate-400">Maharashtra State Police</span>
+                <span className="text-[11px] text-slate-400">Maharashtra State Police</span>
               </div>
-              <h1 className="text-2xl font-bold tracking-tight text-white mt-1">
-                {language === 'mr' ? 'मुंबई पोलीस • आयुक्त कार्यालय' : 'मुंबई पोलीस • MUMBAI POLICE'}
+              <h1 className="text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                <span>
+                  {language === 'mr'
+                    ? 'मुंबई पोलीस • डिजिटल पुरावे व मुद्देमाल अभिरक्षा'
+                    : 'MUMBAI POLICE • INCORRUPTA'}
+                </span>
               </h1>
-              <p className="text-sm text-slate-400">
-                INCORRUPTA — Secure Digital Evidence &amp; Muddemal Custody Management System
-              </p>
             </div>
           </div>
 
-          {/* Right utilities and Officer Profile badge */}
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 bg-police-slate px-3 py-1.5 rounded-md border border-police-border text-xs">
-              <Clock size={13} className="text-status-pristine" />
-              <span className="h-2 w-2 rounded-full bg-status-pristine animate-pulse" />
-              <span className="text-slate-300 font-mono">NPL-IST SYNCED</span>
+          {/* Utilities & Officer Badge */}
+          <div className="flex flex-wrap items-center gap-2.5">
+            {/* NPL-IST time badge */}
+            <div className="flex items-center gap-1.5 bg-police-slate px-2.5 py-1 rounded-md border border-police-border text-xs">
+              <Clock size={12} className="text-status-pristine" />
+              <span className="h-1.5 w-1.5 rounded-full bg-status-pristine animate-pulse" />
+              <span className="text-slate-300 font-mono text-[11px]">NPL-IST SYNCED</span>
             </div>
 
+            {/* Language toggle */}
             <button
               type="button"
               onClick={toggleLanguage}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-police-elevated hover:bg-police-border border border-police-border rounded text-xs font-medium text-slate-200 transition-colors"
+              aria-label="Toggle language"
+              className="flex items-center gap-1 px-2.5 py-1 bg-police-elevated hover:bg-police-border border border-police-border rounded text-xs font-medium text-slate-200 transition-colors"
             >
               <Globe size={13} className="text-accent-cyan" />
               <span>{language === 'mr' ? 'English' : 'मराठी'}</span>
             </button>
 
-            {/* Officer profile card */}
-            <div className="flex items-center gap-3 bg-police-slate border border-police-border px-3.5 py-1.5 rounded-lg shadow">
-              <UserCircle2 size={24} className="text-accent-gold" />
-              <div className="text-left">
-                <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <span>{language === 'mr' ? officer.fullNameMarathi : officer.fullName}</span>
-                  <span className="text-[10px] px-1 py-0.2 rounded bg-police-elevated text-accent-gold font-mono">
-                    {officer.badgeNumber}
-                  </span>
+            {/* Officer Profile Card with Quick Persona Switcher */}
+            <div className="relative">
+              <div
+                onClick={() => setShowPersonaMenu(!showPersonaMenu)}
+                className="flex items-center gap-2.5 bg-police-slate border border-police-border px-3 py-1 rounded-lg shadow cursor-pointer hover:border-accent-gold/50 transition-colors"
+              >
+                <UserCircle2 size={20} className="text-accent-gold" />
+                <div className="text-left text-xs">
+                  <div className="font-bold text-white flex items-center gap-1.5">
+                    <span>{language === 'mr' ? officer.fullNameMarathi : officer.fullName}</span>
+                    <span className="text-[10px] px-1 py-0.2 rounded bg-police-elevated text-accent-gold font-mono">
+                      {officer.badgeNumber}
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-slate-400 flex items-center gap-1">
+                    <Building2 size={10} className="text-slate-500" />
+                    <span className="truncate max-w-[130px]">{officer.policeStation}</span>
+                  </div>
                 </div>
-                <div className="text-[11px] text-slate-400 flex items-center gap-1">
-                  <Building2 size={11} className="text-slate-500" />
-                  <span>{officer.policeStation}</span>
-                </div>
+                <ChevronDown size={14} className="text-slate-400" />
               </div>
 
-              <button
-                type="button"
-                onClick={logout}
-                title="Logout"
-                aria-label="Logout"
-                className="ml-2 p-1.5 hover:bg-police-elevated text-slate-400 hover:text-status-tamper rounded transition-colors"
-              >
-                <LogOut size={16} />
-              </button>
+              {/* Persona switch dropdown */}
+              {showPersonaMenu && (
+                <div className="absolute right-0 mt-2 w-72 bg-police-slate border border-police-border rounded-xl shadow-2xl py-2 z-50">
+                  <div className="px-3 py-1 text-[11px] text-slate-400 font-semibold uppercase border-b border-police-border/50">
+                    Switch Police Officer (Demo)
+                  </div>
+                  {Object.values(SEEDED_OFFICERS).map((p) => (
+                    <button
+                      key={p.sevarthId}
+                      onClick={() => handleSelectOfficerPersona(p.sevarthId)}
+                      className={`w-full text-left px-3 py-2 text-xs hover:bg-police-elevated flex items-center justify-between ${
+                        officer.sevarthId === p.sevarthId ? 'bg-police-elevated/70 text-accent-cyan' : 'text-slate-300'
+                      }`}
+                    >
+                      <div>
+                        <div className="font-semibold">{p.fullName} ({p.badgeNumber})</div>
+                        <div className="text-[10px] text-slate-400">{p.policeStation}</div>
+                      </div>
+                      <span className="text-[9px] font-mono text-accent-gold">{p.sevarthId}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-        </header>
 
-        {/* Operational Status & Verification Card */}
-        <section className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-police-slate border border-police-border rounded-lg p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Statutory Standard</span>
-              <CheckCircle2 className="text-status-pristine" size={20} />
-            </div>
-            <h2 className="text-lg font-bold text-accent-cyan mt-2">
-              Bharatiya Sakshya Adhiniyam, 2023
-            </h2>
-            <p className="text-sm text-slate-400 mt-1">
-              Section 63 Digital Evidence Admissibility Engine Active
-            </p>
-            <div className="mt-4 pt-3 border-t border-police-border/50 text-xs text-slate-500 font-mono">
-              FORM A &amp; B STATUTORY COMPLIANT
-            </div>
+            {/* Logout button */}
+            <button
+              type="button"
+              onClick={logout}
+              title="Logout"
+              aria-label="Logout"
+              className="p-1.5 hover:bg-police-elevated text-slate-400 hover:text-status-tamper rounded transition-colors"
+            >
+              <LogOut size={16} />
+            </button>
           </div>
+        </div>
+      </header>
 
-          <div className="bg-police-slate border border-police-border rounded-lg p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Search Procedure</span>
-              <Lock className="text-accent-gold" size={20} />
-            </div>
-            <h2 className="text-lg font-bold text-accent-gold mt-2">
-              BNSS 2023 Section 105
-            </h2>
-            <p className="text-sm text-slate-400 mt-1">
-              Mandatory Audio-Video Search &amp; Seizure Videography Protocol
-            </p>
-            <div className="mt-4 pt-3 border-t border-police-border/50 text-xs text-slate-500 font-mono">
-              TAMPER-SEALED AT INGESTION
-            </div>
-          </div>
+      {/* Main Content Area */}
+      <main className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1">
+        {view.type === 'dashboard' && (
+          <DashboardPage
+            onSelectCase={(caseId) => setView({ type: 'case-detail', caseId })}
+          />
+        )}
 
-          <div className="bg-police-slate border border-police-border rounded-lg p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Malkhana Ledger</span>
-              <span className="text-xs px-2 py-0.5 rounded bg-status-pristine/20 text-status-pristine font-mono">INTACT</span>
-            </div>
-            <h2 className="text-lg font-bold text-white mt-2">
-              मुद्देमाल रजिस्टर (Muddemal)
-            </h2>
-            <p className="text-sm text-slate-400 mt-1">
-              Unbroken Merkle Hash Chain &amp; FSL Kalina Transit Protocol
-            </p>
-            <div className="mt-4 pt-3 border-t border-police-border/50 text-xs text-status-pristine font-mono">
-              100% CRYPTOGRAPHIC CONTINUITY
-            </div>
-          </div>
-        </section>
-      </div>
-    </main>
+        {view.type === 'case-detail' && (
+          <CaseDetailPage
+            caseId={view.caseId}
+            onBack={() => setView({ type: 'dashboard' })}
+            onNavigateToIngestion={(caseId) => setView({ type: 'ingestion', caseId })}
+          />
+        )}
+
+        {view.type === 'ingestion' && (
+          <IngestionPage
+            caseId={view.caseId}
+            onBack={() => setView({ type: 'case-detail', caseId: view.caseId })}
+            onCompleted={() => setView({ type: 'case-detail', caseId: view.caseId })}
+          />
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-police-border bg-police-navy/80 py-3 text-center text-xs text-slate-500">
+        <p>
+          {language === 'mr'
+            ? 'महाराष्ट्र शासन • मुंबई पोलीस आयुक्त कार्यालय • कलम ६३ भारतीय साक्ष्य अधिनियम (BSA) आणि कलम १०५ बीएनएसएस'
+            : 'Government of Maharashtra • Mumbai Police Commissionerate • Section 63 BSA 2023 & Section 105 BNSS 2023 Standard'}
+        </p>
+      </footer>
+    </div>
   );
 };
 

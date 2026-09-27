@@ -1,0 +1,243 @@
+import type { Database } from '../types/database';
+
+export type CaseRow = Database['public']['Tables']['cases']['Row'];
+export type EvidenceRow = Database['public']['Tables']['evidence']['Row'];
+export type EvidenceHashRow = Database['public']['Tables']['evidence_hashes']['Row'];
+export type ChainOfCustodyRow = Database['public']['Tables']['chain_of_custody']['Row'];
+
+export const INITIAL_CASES: CaseRow[] = [
+  {
+    id: 'case-bkc-142',
+    cr_number: 'CR No. 142/2026 of BKC Cyber PS',
+    police_station: 'BKC Cyber Crime Police Station',
+    fir_date: '2026-08-14T10:30:00+05:30',
+    title: 'Corporate Ransomware & Unauthorized Data Exfiltration',
+    penal_sections: ['BNS 316(2)', 'BNS 318(4)', 'IT Act 66D', 'IT Act 43'],
+    status: 'UNDER_INVESTIGATION',
+    investigating_officer_id: '11111111-1111-4111-a111-111111111111', // API Sachin Kadam
+    supervising_acp_id: null,
+    designated_court: 'City Civil & Sessions Court, Fort, Mumbai',
+    description: 'Ransomware deployment on banking infrastructure with server disk encryption and extortive cryptocurrency demands.',
+    created_at: '2026-08-14T11:00:00+05:30',
+    updated_at: '2026-08-14T11:00:00+05:30',
+  },
+  {
+    id: 'case-azad-089',
+    cr_number: 'CR No. 89/2026 of Azad Maidan PS',
+    police_station: 'Azad Maidan Police Station',
+    fir_date: '2026-09-02T14:15:00+05:30',
+    title: 'Bank Vault Robbery & Surveillance Video Tampering',
+    penal_sections: ['BNS 303(2)', 'BNS 331(4)', 'BNS 61(2)'],
+    status: 'UNDER_INVESTIGATION',
+    investigating_officer_id: '22222222-2222-4222-a222-222222222222', // HC Ramesh Patil
+    supervising_acp_id: null,
+    designated_court: 'Esplanade Court (Killa Court), Mumbai',
+    description: 'Physical vault entry with severed alarm connections and recovered DVR drive containing damaged footage.',
+    created_at: '2026-09-02T15:00:00+05:30',
+    updated_at: '2026-09-02T15:00:00+05:30',
+  },
+  {
+    id: 'case-bkc-205',
+    cr_number: 'CR No. 205/2026 of BKC Cyber PS',
+    police_station: 'BKC Cyber Crime Police Station',
+    fir_date: '2026-09-18T09:00:00+05:30',
+    title: 'AI Deepfake Impersonation & Executive Wire Fraud',
+    penal_sections: ['BNS 318(2)', 'IT Act 66C', 'IT Act 66E'],
+    status: 'UNDER_INVESTIGATION',
+    investigating_officer_id: '11111111-1111-4111-a111-111111111111', // API Sachin Kadam
+    supervising_acp_id: null,
+    designated_court: 'City Civil & Sessions Court, Fort, Mumbai',
+    description: 'Synthetic audio and video generation cloning CEO biometric identity to execute unauthorized RTGS transfers.',
+    created_at: '2026-09-18T09:45:00+05:30',
+    updated_at: '2026-09-18T09:45:00+05:30',
+  },
+];
+
+export const INITIAL_EVIDENCE: EvidenceRow[] = [
+  {
+    id: 'evi-142-01',
+    case_id: 'case-bkc-142',
+    muddemal_number: 'MDL-142/26-01',
+    title: 'Server NVMe SSD Forensic Mirror Image (Server 04 Rack B)',
+    category: 'HARD_DISK_FORENSIC_IMAGE',
+    status: 'INGESTED_PRISTINE',
+    panchnama_reference: 'PAN-BKC-2026-089',
+    panch_witnesses: [
+      { name: 'Vijay Ramchandra Shinde', address: 'Bandra East, Mumbai', phone: '+91 98201 11223' },
+      { name: 'Anil Dattatray More', address: 'Kurla West, Mumbai', phone: '+91 98202 33445' },
+    ],
+    seizure_location: {
+      address: 'BKC Financial Center, Level 8 Data Hall, Bandra Kurla Complex',
+      latitude: 19.0662,
+      longitude: 72.8687,
+    },
+    seizure_timestamp: '2026-08-14T12:45:00+05:30',
+    source_device_info: {
+      make: 'Samsung Enterprise PM9A3',
+      model: 'MZQL23T8HCLS',
+      serial_no: 'S64CNX0R801294',
+      capacity_gb: 3840,
+    },
+    seizing_io_id: '11111111-1111-4111-a111-111111111111',
+    current_custodian_id: '11111111-1111-4111-a111-111111111111',
+    malkhana_shelf_location: 'Rack 4, Bin B-12 (BKC Malkhana)',
+    dfsl_kalina_acknowledgement_no: null,
+    storage_bucket: 'evidence-vault',
+    storage_path: 'cases/142-2026/server_mirror_raw.dd',
+    file_size_bytes: 4124950000,
+    mime_type: 'application/octet-stream',
+    is_sealed: true,
+    created_at: '2026-08-14T13:30:00+05:30',
+    updated_at: '2026-08-14T13:30:00+05:30',
+  },
+  {
+    id: 'evi-142-02',
+    case_id: 'case-bkc-142',
+    muddemal_number: 'MDL-142/26-02',
+    title: 'BNSS Section 105 Continuous Scene Seizure Videography',
+    category: 'SEARCH_SEIZURE_VIDEOGRAPHY_BNSS105',
+    status: 'IN_POLICE_MALKHANA',
+    panchnama_reference: 'PAN-BKC-2026-089',
+    panch_witnesses: [
+      { name: 'Vijay Ramchandra Shinde', address: 'Bandra East, Mumbai', phone: '+91 98201 11223' },
+      { name: 'Anil Dattatray More', address: 'Kurla West, Mumbai', phone: '+91 98202 33445' },
+    ],
+    seizure_location: {
+      address: 'BKC Financial Center, Level 8 Data Hall, Bandra Kurla Complex',
+      latitude: 19.0662,
+      longitude: 72.8687,
+    },
+    seizure_timestamp: '2026-08-14T11:15:00+05:30',
+    source_device_info: {
+      make: 'Sony FX3 Law Enforcement Kit',
+      serial_no: 'SN-FX3-882190',
+      resolution: '4K 60fps ProRes',
+    },
+    seizing_io_id: '11111111-1111-4111-a111-111111111111',
+    current_custodian_id: '22222222-2222-4222-a222-222222222222', // Transferred to HC Ramesh Patil
+    malkhana_shelf_location: 'Malkhana Vault Alpha, Safe 03',
+    dfsl_kalina_acknowledgement_no: null,
+    storage_bucket: 'evidence-vault',
+    storage_path: 'cases/142-2026/seizure_videography_bnss105.mp4',
+    file_size_bytes: 1845200000,
+    mime_type: 'video/mp4',
+    is_sealed: true,
+    created_at: '2026-08-14T11:55:00+05:30',
+    updated_at: '2026-08-14T14:10:00+05:30',
+  },
+  {
+    id: 'evi-142-03',
+    case_id: 'case-bkc-142',
+    muddemal_number: 'MDL-142/26-03',
+    title: 'Encrypted Ransom Note & Network Traffic PCAP Dump',
+    category: 'NETWORK_PCAP_PACKET',
+    status: 'DISPATCHED_TO_KALINA_FSL',
+    panchnama_reference: 'PAN-BKC-2026-089',
+    panch_witnesses: [
+      { name: 'Vijay Ramchandra Shinde', address: 'Bandra East, Mumbai', phone: '+91 98201 11223' },
+      { name: 'Anil Dattatray More', address: 'Kurla West, Mumbai', phone: '+91 98202 33445' },
+    ],
+    seizure_location: {
+      address: 'BKC Financial Center, Level 8 Data Hall, Bandra Kurla Complex',
+      latitude: 19.0662,
+      longitude: 72.8687,
+    },
+    seizure_timestamp: '2026-08-14T13:00:00+05:30',
+    source_device_info: {
+      make: 'Cisco Firepower Core Switch Mirror',
+      serial_no: 'JMX2410L1AP',
+    },
+    seizing_io_id: '11111111-1111-4111-a111-111111111111',
+    current_custodian_id: '11111111-1111-4111-a111-111111111111',
+    malkhana_shelf_location: null,
+    dfsl_kalina_acknowledgement_no: 'DFSL-KALINA-CYBER-2026-4402',
+    storage_bucket: 'evidence-vault',
+    storage_path: 'cases/142-2026/perimeter_intrusion_capture.pcap',
+    file_size_bytes: 752300000,
+    mime_type: 'application/vnd.tcpdump.pcap',
+    is_sealed: true,
+    created_at: '2026-08-14T13:40:00+05:30',
+    updated_at: '2026-08-15T10:20:00+05:30',
+  },
+];
+
+export const INITIAL_HASHES: EvidenceHashRow[] = [
+  {
+    id: 'hash-142-01',
+    evidence_id: 'evi-142-01',
+    sha256_hash: '9f83c605d4c82b3e925b139d404100e2ee196e0ab9a0280ec5738c611f12019e',
+    blake3_hash: '7a84e5b9812678c1873dc682490b411d73918a93bc71d4400e93a7494f6f8bb1',
+    calculated_at: '2026-08-14T13:30:00+05:30',
+    calculated_by: '11111111-1111-4111-a111-111111111111',
+    verification_passed: true,
+    hashing_event_stage: 'SCENE_SEIZURE_PANCHNAMA',
+  },
+  {
+    id: 'hash-142-02',
+    evidence_id: 'evi-142-02',
+    sha256_hash: '3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b',
+    blake3_hash: '5910ca573a4667a4e69b552fa102b41dc1c1f77d54e4a7d656094b92b67f1850',
+    calculated_at: '2026-08-14T11:55:00+05:30',
+    calculated_by: '11111111-1111-4111-a111-111111111111',
+    verification_passed: true,
+    hashing_event_stage: 'SCENE_SEIZURE_PANCHNAMA',
+  },
+  {
+    id: 'hash-142-03',
+    evidence_id: 'evi-142-03',
+    sha256_hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+    blake3_hash: 'af1349b4f53f1317199da4b45b230262d3adc7af7d9a76da524941485bfa17b5',
+    calculated_at: '2026-08-14T13:40:00+05:30',
+    calculated_by: '11111111-1111-4111-a111-111111111111',
+    verification_passed: true,
+    hashing_event_stage: 'SCENE_SEIZURE_PANCHNAMA',
+  },
+];
+
+export const INITIAL_CUSTODY_EVENTS: ChainOfCustodyRow[] = [
+  {
+    id: 'cust-142-01-a',
+    evidence_id: 'evi-142-01',
+    transferor_id: '11111111-1111-4111-a111-111111111111', // API Sachin Kadam
+    transferee_id: '11111111-1111-4111-a111-111111111111',
+    movement_type: 'SCENE_SEIZURE_TO_MALKHANA',
+    purpose_memo: 'Initial physical seizure under Section 105 BNSS 2023 with Panchnama',
+    verification_hash: '9f83c605d4c82b3e925b139d404100e2ee196e0ab9a0280ec5738c611f12019e',
+    transferor_signature: 'WEBAUTHN_SIG_API_KADAM_GEN_001',
+    transferee_signature: 'WEBAUTHN_SIG_API_KADAM_GEN_001',
+    custody_sequence_number: 1,
+    previous_event_hash: '0000000000000000000000000000000000000000000000000000000000000000',
+    current_event_hash: 'a1b2c3d4e5f678901234567890abcdef1234567890abcdef1234567890abcdef',
+    recorded_at: '2026-08-14T13:30:00+05:30',
+  },
+  {
+    id: 'cust-142-02-a',
+    evidence_id: 'evi-142-02',
+    transferor_id: '11111111-1111-4111-a111-111111111111', // API Sachin Kadam
+    transferee_id: '22222222-2222-4222-a222-222222222222', // HC Ramesh Patil
+    movement_type: 'SCENE_SEIZURE_TO_MALKHANA',
+    purpose_memo: 'Handover to Station Malkhana Mohrir for safe custody deposit in locker safe 03',
+    verification_hash: '3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b',
+    transferor_signature: 'WEBAUTHN_SIG_API_KADAM_GEN_002',
+    transferee_signature: 'WEBAUTHN_SIG_HC_PATIL_GEN_001',
+    custody_sequence_number: 2,
+    previous_event_hash: 'a1b2c3d4e5f678901234567890abcdef1234567890abcdef1234567890abcdef',
+    current_event_hash: 'b2c3d4e5f678901234567890abcdef1234567890abcdef1234567890abcdef12',
+    recorded_at: '2026-08-14T14:10:00+05:30',
+  },
+  {
+    id: 'cust-142-03-a',
+    evidence_id: 'evi-142-03',
+    transferor_id: '11111111-1111-4111-a111-111111111111', // API Sachin Kadam
+    transferee_id: '11111111-1111-4111-a111-111111111111',
+    movement_type: 'MALKHANA_TO_KALINA_FSL',
+    purpose_memo: 'Dispatched to Directorate of Forensic Science Laboratories (DFSL), Kalina for reverse payload analysis',
+    verification_hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+    transferor_signature: 'WEBAUTHN_SIG_API_KADAM_GEN_003',
+    transferee_signature: 'WEBAUTHN_SIG_DFSL_KALINA_OFFICER_04',
+    custody_sequence_number: 3,
+    previous_event_hash: 'b2c3d4e5f678901234567890abcdef1234567890abcdef1234567890abcdef12',
+    current_event_hash: 'c3d4e5f678901234567890abcdef1234567890abcdef1234567890abcdef1234',
+    recorded_at: '2026-08-15T10:20:00+05:30',
+  },
+];

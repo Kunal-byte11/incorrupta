@@ -20,8 +20,8 @@
 │ T-003  │ CI Workflow & Test Pipeline               │ Phase 0  │ S      │ DONE   │
 │ T-004  │ Mumbai Police PostgreSQL Schema Migration │ Phase 1  │ M      │ DONE   │
 │ T-005  │ WebAuthn Relying Party Edge Functions     │ Phase 1  │ M      │ DONE   │
-│ T-006  │ Sevarth ID WebAuthn Client Login UI       │ Phase 1  │ M      │ TODO   │
-│ T-007  │ FIR / CR Case Management CRUD UI          │ Phase 2  │ M      │
+│ T-006  │ Sevarth ID WebAuthn Client Login UI       │ Phase 1  │ M      │ DONE   │
+│ T-007  │ FIR / CR Case Management CRUD UI          │ Phase 2  │ M      │ TODO   │
 │ T-008  │ Police Station & Zone RLS Security        │ Phase 2  │ M      │
 │ T-009  │ Web Crypto Streaming Dual-Hashing Engine  │ Phase 3  │ M      │
 │ T-010  │ Direct S3 Encrypted Upload Integration    │ Phase 3  │ M      │
@@ -101,12 +101,13 @@
 ---
 
 ### T-006: Sevarth ID WebAuthn Client Login UI
-- **Type:** `feature` | **Phase:** Phase 1 | **Size:** M | **Status:** TODO
+- **Type:** `feature` | **Phase:** Phase 1 | **Size:** M | **Status:** DONE
 - **Description:** Build `LoginPage.tsx` with Mumbai Police crest, Sevarth ID input (e.g. `MH-POL-40211`), English / मराठी toggle, and biometric TouchID/YubiKey trigger.
 - **Acceptance Criteria:**
   - *Given* an IO on `/login`,
   - *When* entering Sevarth ID and tapping "Verify Biometric Passkey / बायोमेट्रिक पडताळणी",
   - *Then* browser WebAuthn authenticates and navigates to the station dashboard.
+- **Changelog:** Built `LoginPage.tsx` with Mumbai Police branding, bilingual Devanagari/English support, quick-select officer profiles, and WebAuthn hook integration with simulated fallback for tests/headless environments. Added 5 unit tests in `src/components/auth/LoginPage.test.tsx` and verified all tests pass.
 
 ---
 

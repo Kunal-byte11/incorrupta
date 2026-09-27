@@ -1,8 +1,13 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { App } from './App';
+import { SEEDED_OFFICERS } from './context/AuthContext';
 
 describe('Mumbai Police Theme & Design Tokens (T-002)', () => {
+  beforeEach(() => {
+    localStorage.setItem('incorrupta_officer', JSON.stringify(SEEDED_OFFICERS['MH-POL-40211']));
+  });
+
   it('renders Mumbai Police heading and state motto', () => {
     render(<App />);
     const heading = screen.getByRole('heading', { level: 1 });
@@ -22,6 +27,6 @@ describe('Mumbai Police Theme & Design Tokens (T-002)', () => {
 
   it('renders NPL-IST time synchronization badge', () => {
     render(<App />);
-    expect(screen.getByText(/NPL-IST \(UTC\+05:30\) SYNCED/i)).toBeInTheDocument();
+    expect(screen.getByText(/NPL-IST SYNCED/i)).toBeInTheDocument();
   });
 });

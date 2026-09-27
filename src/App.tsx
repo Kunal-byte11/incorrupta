@@ -1,11 +1,19 @@
 import React from 'react';
-import { ShieldCheck, Lock, CheckCircle2 } from 'lucide-react';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { LoginPage } from './components/auth/LoginPage';
+import { ShieldCheck, Lock, CheckCircle2, LogOut, UserCircle2, Building2, Clock, Globe } from 'lucide-react';
 
-export const App: React.FC = () => {
+const MainPortal: React.FC = () => {
+  const { officer, isAuthenticated, logout, language, toggleLanguage } = useAuth();
+
+  if (!isAuthenticated || !officer) {
+    return <LoginPage />;
+  }
+
   return (
     <main className="min-h-screen bg-police-navy text-slate-100 p-6 md:p-10 font-sans">
       <div className="max-w-7xl mx-auto">
-        {/* Mumbai Police Header */}
+        {/* Mumbai Police Header with Officer Status */}
         <header className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-police-border gap-4">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-police-slate rounded-lg border border-police-border shadow-md">
@@ -19,7 +27,7 @@ export const App: React.FC = () => {
                 <span className="text-xs text-slate-400">Maharashtra State Police</span>
               </div>
               <h1 className="text-2xl font-bold tracking-tight text-white mt-1">
-                मुंबई पोलीस • MUMBAI POLICE
+                {language === 'mr' ? 'मुंबई पोलीस • आयुक्त कार्यालय' : 'मुंबई पोलीस • MUMBAI POLICE'}
               </h1>
               <p className="text-sm text-slate-400">
                 INCORRUPTA — Secure Digital Evidence &amp; Muddemal Custody Management System
@@ -27,10 +35,48 @@ export const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          {/* Right utilities and Officer Profile badge */}
+          <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-2 bg-police-slate px-3 py-1.5 rounded-md border border-police-border text-xs">
+              <Clock size={13} className="text-status-pristine" />
               <span className="h-2 w-2 rounded-full bg-status-pristine animate-pulse" />
-              <span className="text-slate-300 font-mono">NPL-IST (UTC+05:30) SYNCED</span>
+              <span className="text-slate-300 font-mono">NPL-IST SYNCED</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-police-elevated hover:bg-police-border border border-police-border rounded text-xs font-medium text-slate-200 transition-colors"
+            >
+              <Globe size={13} className="text-accent-cyan" />
+              <span>{language === 'mr' ? 'English' : 'मराठी'}</span>
+            </button>
+
+            {/* Officer profile card */}
+            <div className="flex items-center gap-3 bg-police-slate border border-police-border px-3.5 py-1.5 rounded-lg shadow">
+              <UserCircle2 size={24} className="text-accent-gold" />
+              <div className="text-left">
+                <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <span>{language === 'mr' ? officer.fullNameMarathi : officer.fullName}</span>
+                  <span className="text-[10px] px-1 py-0.2 rounded bg-police-elevated text-accent-gold font-mono">
+                    {officer.badgeNumber}
+                  </span>
+                </div>
+                <div className="text-[11px] text-slate-400 flex items-center gap-1">
+                  <Building2 size={11} className="text-slate-500" />
+                  <span>{officer.policeStation}</span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={logout}
+                title="Logout"
+                aria-label="Logout"
+                className="ml-2 p-1.5 hover:bg-police-elevated text-slate-400 hover:text-status-tamper rounded transition-colors"
+              >
+                <LogOut size={16} />
+              </button>
             </div>
           </div>
         </header>
@@ -87,6 +133,14 @@ export const App: React.FC = () => {
         </section>
       </div>
     </main>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <MainPortal />
+    </AuthProvider>
   );
 };
 
